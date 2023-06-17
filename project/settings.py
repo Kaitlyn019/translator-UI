@@ -31,14 +31,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'translator',
     'channels',
+    'translator',
 ]
 
 MIDDLEWARE = [
@@ -124,9 +125,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ASGI_APPLICATION = "project.routing.application" #routing.py will be created later
+ASGI_APPLICATION = "project.asgi.application"
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': "channels.layers.InMemoryChannelLayer"
-        }
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
+}
