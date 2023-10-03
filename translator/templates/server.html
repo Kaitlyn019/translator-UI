@@ -2,12 +2,39 @@
 <html>
 <head>
     <meta charset="utf-8"/>
+    <style>
+        textarea {
+            border: none;
+            overflow: auto;
+            outline: none;
+            width: 100%;
+            font-size: 72px;
+        }
+
+        div[contenteditable]{
+            border: none;
+            width: 80%;
+            max-height: 80%;
+            overflow: auto;
+            font-size: 72px;
+            flex-direction: column-reverse;
+        }
+
+        #settings {
+            float: right;
+            border: none;
+            font-size: large;
+            background: none;
+        }
+    </style>
     <title>Server Side</title>
 </head>
 <body>
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-    <input id="chat-message-input" type="text" size="100"><br>
-    <input id="chat-message-submit" type="button" value="Send">
+    <!-- <textarea id="past-log" cols="100" rows="20"></textarea><br>
+    <textarea id="chat-log" cols="100" rows="5"></textarea><br>
+    <button id="settings">⚙️</button> -->
+    <div contenteditable id="past-trans"></div>
+    <textarea id="curr-trans" cols="100" rows="5"></textarea>
     {{ room_name|json_script:"room-name" }}
 
     <script>
@@ -27,32 +54,21 @@
             // JSON.parse() converts the JSON object back into the original object,
             // then examine and act upon its contents.
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            console.log(data)
+            if (data.isFinal) {
+                //document.querySelector('#past-log').value += (data.message + '. ');
+                document.querySelector('#past-trans').textContent += (data.translated + '. ');
+                document.querySelector('#curr-trans').value = "";
+            } else {
+                //document.querySelector('#chat-log').value = (data.message + '. ');
+                document.querySelector('#curr-trans').value = (data.translated + '. ');
+            }
+
         };
 
         // onclose - An event listener to be called when the connection is closed.
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
-        };
-
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#chat-message-submit').click();
-            }
-        };
-
-        document.querySelector('#chat-message-submit').onclick = function(e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
-
-            // Send the msg object as a JSON-formatted string.
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
-
-            // Blank the text input element, ready to receive the next line of text from the user.
-            messageInputDom.value = '';
         };
     </script>
 </body>
