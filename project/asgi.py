@@ -7,8 +7,6 @@ import translator.routing
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
 
-
-
 application = ProtocolTypeRouter({
   "http": get_asgi_application(),
   "websocket": AuthMiddlewareStack(
