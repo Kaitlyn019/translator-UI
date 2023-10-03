@@ -80,7 +80,7 @@ CHANNEL_LAYERS = {
         "CONFIG": {
             "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
         },
-        #"ROUTING": "translator.routing.channel_routing",
+        "ROUTING": "translator.routing.channel_routing",
     },
 }
 
