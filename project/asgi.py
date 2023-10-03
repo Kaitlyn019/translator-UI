@@ -14,9 +14,9 @@ from channels.routing import get_default_application
 #from django.core.asgi import get_asgi_application
 #from channels.layers import get_channel_layer
 
+django.setup()
 application = get_default_application()
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
-django.setup()
 
 #channel_layer = get_channel_layer()
 #application = get_asgi_application()
