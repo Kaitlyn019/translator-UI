@@ -1,7 +1,10 @@
 import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+#from google.cloud import translate_v2 as translate
+from deep_translator import GoogleTranslator
 
+#translate_client = translate.Client()
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -27,13 +30,20 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-
+        isFinal = text_data_json['isFinal']
+        #result = translate_client.translate(message, target_language='zh')
+        
+        translated = GoogleTranslator(source='en', target='zh-CN').translate(text=message)
+        print (translated)
+        
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message,
+                'isFinal': isFinal,
+                'translated': translated
             }
         )
 
@@ -43,5 +53,7 @@ class ChatConsumer(WebsocketConsumer):
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
-            'message': message
+            'message': message,
+            'translated': event['translated'],
+            'isFinal': event['isFinal']
         }))
