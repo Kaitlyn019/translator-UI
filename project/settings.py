@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-2bhgc#)(39#s84-q4v43zrb)_#fqw=3hfwt2ub%()%^k*6nn3%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.1.253", "127.0.0.1", "audio-translator-c87ee2a49bc4.herokuapp.com"]
+ALLOWED_HOSTS = ["192.168.1.253", "127.0.0.1", ".herokuapp.com"]
 
 
 # Application definition
@@ -76,11 +76,10 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "BACKEND": "channels_redis.project.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+            "hosts": [("127.0.0.1", 6379)],
         },
-        "ROUTING": "translator.routing.channel_routing",
     },
 }
 
