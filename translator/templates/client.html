@@ -25,7 +25,7 @@
         );*/
 
         var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-        var chatSocket = new WebSocket(ws_scheme + '://' + window.location.host + "/chat" + window.location.pathname);
+        var chatSocket = new WebSocket(ws_scheme + '://' + window.location.host + "/chat");
 
         // onmessage - An event listener to be called when a message is received from the server.
         chatSocket.onmessage = function(e) {
